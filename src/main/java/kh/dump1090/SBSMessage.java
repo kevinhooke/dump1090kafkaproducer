@@ -11,28 +11,74 @@ package kh.dump1090;
  */
 public class SBSMessage {
 	
+	//inline comments represent array position after split()
+	
+	//0
 	private String messageType; // SEL, ID, AIR, STA, CLK, MSG
+	
+	//1
 	private int transmissionType; // 1..8
+	
+	//2
 	private int sessionId;
+	
+	//3
 	private int aircraftId;
+	
+	//4
 	private String hexIdent; // ICAO airframe id
+	
+	//5
 	private String flightId;
+	
+	//6
 	private String dateMessageGenerated;
+	
+	//7
 	private String timeMessageGenerated;
+	
+	//8
 	private String dateMessageLogged;
+	
+	//9
 	private String timeMessageLogged;
+	
+	//10
 	private String callsign;
+	
+	//11
 	private int altitude;
+	
+	//12
 	private int groundSpeed;
+	
+	//13
 	private String track;
+	
+	//14
 	private String latitude;
+	
+	//15
 	private String longitude;
+	
+	//16
 	private int verticalRate;
-	private String squark;
-	private String alertSquarkChange;
+	
+	//17
+	private String squawk;
+	
+	//18
+	private String alertSquawkChange;
+	
+	//19
 	private String emergency;
+	
+	//20
 	private String spi;
+	
+	//21
 	private String onGround;
+	
 	
 	public SBSMessage() {
 		
@@ -61,8 +107,8 @@ public class SBSMessage {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.verticalRate = verticalRate;
-		this.squark = squark;
-		this.alertSquarkChange = alertSquarkChange;
+		this.squawk = squark;
+		this.alertSquawkChange = alertSquarkChange;
 		this.emergency = emergency;
 		this.spi = spi;
 		this.onGround = onGround;
@@ -171,17 +217,17 @@ public class SBSMessage {
 	public void setVerticalRate(int verticalRate) {
 		this.verticalRate = verticalRate;
 	}
-	public String getSquark() {
-		return squark;
+	public String getSquawk() {
+		return squawk;
 	}
-	public void setSquark(String squark) {
-		this.squark = squark;
+	public void setSquawk(String squawk) {
+		this.squawk = squawk;
 	}
-	public String getAlertSquarkChange() {
-		return alertSquarkChange;
+	public String getAlertSquawkChange() {
+		return alertSquawkChange;
 	}
-	public void setAlertSquarkChange(String alertSquarkChange) {
-		this.alertSquarkChange = alertSquarkChange;
+	public void setAlertSquawkChange(String alertSquawkChange) {
+		this.alertSquawkChange = alertSquawkChange;
 	}
 	public String getEmergency() {
 		return emergency;
