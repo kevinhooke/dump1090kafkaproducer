@@ -29,7 +29,8 @@ public class Dump1090KafkaProducer {
 			System.out.println("Line: " + currentLine);
 			
 			SBSMessage msg = this.splitLineToSBSMessage(currentLine);
-			this.kafkaTemplate.send("sbs-message", msg);
+			//use icao hex as the message key
+			this.kafkaTemplate.send("sbs-message", msg.getHexIdent(), msg);
 		}
 		
 	}
