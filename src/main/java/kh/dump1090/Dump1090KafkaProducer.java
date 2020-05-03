@@ -3,7 +3,12 @@ package kh.dump1090;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
+import java.util.Properties;
 
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -23,6 +28,11 @@ public class Dump1090KafkaProducer {
 	public void readStandardIn() throws IOException {
 		InputStreamReader streamReader = new InputStreamReader(System.in);
 		BufferedReader reader = new BufferedReader(streamReader);
+
+		//test kafka api
+		Properties props = new Properties();
+		props.load(this.getClass().getResourceAsStream("/producer.properties"));
+		Producer<String, SBSMessage> producer = new KafkaProducer<>(props);
 		
 		String currentLine = null;
 		while((currentLine = reader.readLine()) != null) {
@@ -30,8 +40,17 @@ public class Dump1090KafkaProducer {
 			
 			SBSMessage msg = this.splitLineToSBSMessage(currentLine);
 			//use icao hex as the message key
-			this.kafkaTemplate.send("sbs-message", msg.getHexIdent(), msg);
+			
+			//spring kafka - timesout
+			//this.kafkaTemplate.send("sbs-message", msg.getHexIdent(), msg);
+			
+			//kafka api = works
+			producer.send(new ProducerRecord<String, SBSMessage>("sbs-message", msg.getHexIdent(), msg));
+			producer.flush();
 		}
+		
+		producer.close();
+
 		
 	}
 
