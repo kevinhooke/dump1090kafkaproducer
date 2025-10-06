@@ -1,4 +1,7 @@
 package kh.dump1090;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Example SBS message line from dump1090:
  * 
@@ -14,33 +17,43 @@ public class SBSMessage {
 	//inline comments represent array position after split()
 	
 	//0
+    @JsonProperty("message_type")
 	private String messageType; // SEL, ID, AIR, STA, CLK, MSG
 	
 	//1
+    @JsonProperty("transmission_type")
 	private int transmissionType; // 1..8
 	
 	//2
+    @JsonProperty("session_id")
 	private int sessionId;
 	
 	//3
+    @JsonProperty("aircraft_id")
 	private int aircraftId;
 	
 	//4
+    @JsonProperty("hex_ident")
 	private String hexIdent; // ICAO airframe id
 	
 	//5
+    @JsonProperty("flight_id")
 	private String flightId;
 	
 	//6
+    @JsonProperty("date_message_generated")
 	private String dateMessageGenerated;
 	
 	//7
+    @JsonProperty("time_message_generated")
 	private String timeMessageGenerated;
 	
 	//8
+    @JsonProperty("date_message_logged")
 	private String dateMessageLogged;
 	
 	//9
+    @JsonProperty("time_message_logged")
 	private String timeMessageLogged;
 	
 	//10
@@ -50,6 +63,7 @@ public class SBSMessage {
 	private int altitude;
 	
 	//12
+    @JsonProperty("ground_speed")
 	private int groundSpeed;
 	
 	//13
@@ -62,12 +76,14 @@ public class SBSMessage {
 	private String longitude;
 	
 	//16
+    @JsonProperty("vertical_rate")
 	private int verticalRate;
 	
 	//17
 	private String squawk;
 	
 	//18
+    @JsonProperty("alert_squawk_change")
 	private String alertSquawkChange;
 	
 	//19
@@ -77,6 +93,7 @@ public class SBSMessage {
 	private String spi;
 	
 	//21
+    @JsonProperty("on_ground")
 	private String onGround;
 	
 	

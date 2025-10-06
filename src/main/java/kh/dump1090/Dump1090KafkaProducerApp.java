@@ -4,15 +4,23 @@ import java.io.IOException;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+/**
+ * Example run: nc piaware.local 30003 | java -jar dump1090-kafkaproducer-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+ */
 public class Dump1090KafkaProducerApp {
 
-	public static void main(String[] args) throws IOException {
+    /**
+     * See app runmode property in app.properties
+     * @param args
+     * @throws IOException
+     */
+    public static void main(String[] args) throws Exception {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
         ctx.register(AppConfig.class);
         ctx.refresh();
-        
-        Dump1090KafkaProducer producer = (Dump1090KafkaProducer) ctx.getBean("dump1090KafkaProducer");
-        producer.readStandardIn();
+
+        AppRunModeHelper helper = (AppRunModeHelper) ctx.getBean("appRunModeHelper");
+        helper.startBasedOnRunMode();
 	}
 
 }

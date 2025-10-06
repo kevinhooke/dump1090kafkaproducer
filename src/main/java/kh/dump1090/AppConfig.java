@@ -18,6 +18,7 @@ import org.springframework.kafka.core.ProducerFactory;
 @ComponentScan
 @EnableKafka
 @PropertySource("producer.properties")
+@PropertySource("app.properties")
 public class AppConfig {
 
 	@Value("${key.serializer}")
