@@ -7,11 +7,15 @@ import kh.dump1090.messageforwarder.MessageForwarder;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 /**
@@ -20,6 +24,11 @@ import java.util.Properties;
  */
 @Component
 public class StreamReader {
+
+    private DateTimeFormatter dump1090DateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+    private DateTimeFormatter djangoDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    private static Logger LOGGER = LoggerFactory.getLogger(StreamReader.class);
 
     /**
      * Reads dump1090 stream and forwards to the provided 'forwarder'.
@@ -34,16 +43,16 @@ public class StreamReader {
 
         String currentLine = null;
         while ((currentLine = reader.readLine()) != null) {
-            System.out.println("Line: " + currentLine);
-            SBSMessage msg = this.splitLineToSBSMessage(currentLine);
+            try {
+                LOGGER.info("Line: " + currentLine);
+                SBSMessage msg = this.splitLineToSBSMessage(currentLine);
 
-            //debug json
-            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-            String json = ow.writeValueAsString(msg);
-            System.out.println("JSON payload: " + json);
-
-            if(msg != null) {
-                forwarder.forwardMessage(msg);
+                if (msg != null) {
+                    forwarder.forwardMessage(msg);
+                }
+            }
+            catch(Exception e){
+                LOGGER.error(e.getMessage());
             }
         }
     }
@@ -88,9 +97,9 @@ public class StreamReader {
 
             msg.setHexIdent(fields[4]);
             msg.setFlightId(fields[5]);
-            msg.setDateMessageGenerated(fields[6]);
+            msg.setDateMessageGenerated(convertDump1090DateToDjangoDRFExpectedFormat(fields[6]));
             msg.setTimeMessageGenerated(fields[7]);
-            msg.setDateMessageLogged(fields[8]);
+            msg.setDateMessageLogged(convertDump1090DateToDjangoDRFExpectedFormat(fields[8]));
             msg.setTimeMessageLogged(fields[9]);
             msg.setCallsign(fields[10]);
 
@@ -126,6 +135,11 @@ public class StreamReader {
             System.out.println("... skipping blank line");
         }
         return msg;
+    }
+
+    private String convertDump1090DateToDjangoDRFExpectedFormat(String dump1090Date){
+        String result = dump1090Date.replaceAll("/", "-");
+        return result;
     }
 
 }

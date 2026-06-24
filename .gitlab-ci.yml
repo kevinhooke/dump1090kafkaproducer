@@ -1,0 +1,26 @@
+default:
+  tags:
+    - docker
+  image: docker:29.1.3-cli
+  services:
+    - docker:29.1.3-dind
+
+build_image:
+  script:
+  # tag and push to local docker registry
+  - docker build -t 10.0.10.3:5000/dump1090kafkaproducer:latest .
+  - docker push 10.0.10.3:5000/dump1090kafkaproducer:latest
+
+deploy:
+  stage: deploy
+  before_script:
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - touch ~/.ssh/config
+    - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+    - touch ~/.ssh/known_hosts
+    - chmod -R 400 ~/.ssh
+    - docker context create remote --docker "host=ssh://gitlab-runner@10.0.10.3" 
+  script:
+    - docker --context remote docker run -e PIAWARE_HOST=192.168.4.233 10.0.10.3:5000/dump1090kafkaproducer:latest -d --pull always
