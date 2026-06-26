@@ -23,4 +23,4 @@ deploy:
     - chmod -R 400 ~/.ssh
     - docker context create remote --docker "host=ssh://gitlab-runner@10.0.10.2" 
   script:
-    - docker --context remote run -e PIAWARE_HOST=192.168.4.233 10.0.10.2:5000/dump1090kafkaproducer:latest -d --pull always
+    - docker --context remote run -d --pull always -e PIAWARE_HOST=192.168.4.233 10.0.10.2:5000/dump1090kafkaproducer:latest
