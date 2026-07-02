@@ -1,0 +1,7 @@
+services:
+  dump1090-kafkaproducer:
+    build: .
+    environment:
+      - PIAWARE_HOST=${PIAWARE_HOST:-piaware.local}
+      - RESTCLIENT_URIBASE=${RESTCLIENT_URIBASE:-http://localhost:8001}
+    network_mode: host
