@@ -43,8 +43,8 @@ public class RestClientForwarder implements MessageForwarder {
             //fill in blanks if icao hex is in aircraft.csv
             if(detail != null){
                 msg.setCallsign(detail.registration());
-
-                //TODO add in additional detail, needs update to SBSMessage
+                msg.setType(detail.type());
+                msg.setFullType(detail.fullTypeName());
             }
         }
 

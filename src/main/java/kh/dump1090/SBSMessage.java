@@ -95,7 +95,12 @@ public class SBSMessage {
 	//21
     @JsonProperty("on_ground")
 	private String onGround;
-	
+
+    //additional aircraft details from aircraft.csv, not in ADSB message
+    @JsonProperty("aircraft_type")
+    private String type;
+    @JsonProperty("aircraft_full_type")
+    private String fullType;
 	
 	public SBSMessage() {
 		
@@ -105,7 +110,7 @@ public class SBSMessage {
 			String hexIdent, String flightId, String dateMessageGenerated, String timeMessageGenerated,
 			String dateMessageLogged, String timeMessageLogged, String callsign, int altitude, int groundSpeed,
 			String track, String latitude, String longitude, int verticalRate, String squark, String alertSquarkChange,
-			String emergency, String spi, String onGround) {
+			String emergency, String spi, String onGround, String type, String fulltype) {
 		super();
 		this.messageType = messageType;
 		this.transmissionType = transmissionType;
@@ -129,6 +134,10 @@ public class SBSMessage {
 		this.emergency = emergency;
 		this.spi = spi;
 		this.onGround = onGround;
+
+        //additional aircraft properties
+        this.type = type;
+        this.fullType = fulltype;
 	}
 	
 	
@@ -264,4 +273,19 @@ public class SBSMessage {
 	public void setOnGround(String onGround) {
 		this.onGround = onGround;
 	}
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getFullType() {
+        return fullType;
+    }
+
+    public void setFullType(String fullType) {
+        this.fullType = fullType;
+    }
 }
