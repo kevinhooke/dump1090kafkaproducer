@@ -1,8 +1,9 @@
 FROM maven:3.9-eclipse-temurin-17 AS builder
 WORKDIR /build
 COPY pom.xml .
+RUN --mount=type=cache,target=/root/.m2/repository mvn -B dependency:go-offline
 COPY src ./src
-RUN mvn package -DskipTests
+RUN --mount=type=cache,target=/root/.m2/repository mvn -B package -DskipTests
 
 FROM eclipse-temurin:17-jre
 RUN apt update && apt upgrade -y && apt install -y netcat-openbsd
