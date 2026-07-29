@@ -37,13 +37,11 @@ public class RestClientForwarder implements MessageForwarder {
     public void forwardMessage(SBSMessage msg) throws IOException {
         logger.debug("RESTForwarder forwarding message, uribase: " + uriBase);
 
-        if(msg.getCallsign() == null){
+        if(msg.getCallsign() == null || msg.getCallsign().isEmpty()){
             AircraftDetail detail = icaoLookup.lookup(msg.getHexIdent());
 
             //fill in blanks if icao hex is in aircraft.csv
             if(detail != null){
-                String registration =
-                        
                 msg.setCallsign(detail.registration());
 
                 //TODO add in additional detail, needs update to SBSMessage

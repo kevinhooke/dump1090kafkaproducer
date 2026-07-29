@@ -42,7 +42,12 @@ public class IcaoLookup {
         //format: icao;registration;type_code;flags;full_type_name
         for(String line : lines){
             String[] fields = line.split(";");
-            icaoMap.put(fields[0], new AircraftDetail(fields[0], fields[1], fields[2], fields[3]));
+            String fullDesc = "";
+            // full type desc is only included for some rows
+            if(fields.length == 5){
+                fullDesc = fields[4];
+            }
+            icaoMap.put(fields[0], new AircraftDetail(fields[0], fields[1], fields[2], fields[3], fullDesc));
         }
 
     }
