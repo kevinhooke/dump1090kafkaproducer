@@ -33,6 +33,9 @@ public class IcaoLookup {
     @PostConstruct
     public void init() throws URISyntaxException, IOException {
         InputStream is = IcaoLookup.class.getResourceAsStream("/aircraft.csv");
+        if (is == null) {
+            throw new IOException("aircraft.csv not found on classpath");
+        }
         List<String> lines = new BufferedReader(new InputStreamReader(is,
                 StandardCharsets.UTF_8))
                 .lines().toList();
